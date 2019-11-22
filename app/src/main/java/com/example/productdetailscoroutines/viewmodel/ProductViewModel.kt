@@ -16,23 +16,12 @@ import kotlinx.coroutines.launch
 
 class ProductViewModel constructor(private val productRepository: ProductRepository) : ViewModel() {
 
-    var productDetail:List<ProductModel> = listOf()
+    var productListLifeData: MutableLiveData<List<ProductModel>> = MutableLiveData()
 
-    suspend fun fetchProdDetails() : List<ProductModel> {
+    fun fetchProdDetails() {
 
-        return GlobalScope.async(Dispatchers.IO) {
-            productRepository.fetchProductRepos()
-            // return prodDetail
-        }.await()
-    }
-
-    suspend fun fetchAndShowProdDetails() {
-        val prod = fetchProdDetails() // fetch on IO thread
-        showProd(prod) // back on UI thread
-    }
-
-    fun showProd(prod: List<ProductModel>) {
-        this.productDetail = prod
-        Log.i("ViewModelShow", "${productDetail[1].productName}")
+        GlobalScope.launch(Dispatchers.IO) {
+            productListLifeData.postValue(productRepository.fetchProductRepos())
+        }
     }
 }

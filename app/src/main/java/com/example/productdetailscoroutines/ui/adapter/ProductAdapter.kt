@@ -9,7 +9,7 @@ import com.example.productdetailscoroutines.data.ProductModel
 import com.example.productdetailscoroutines.utils.inflate
 
 
-class ProductAdapter constructor(private val prodDetail: List<ProductModel>, private val listener: ProductListener) :
+class ProductAdapter constructor(private val prodDetail: MutableList<ProductModel>, private val listener: ProductListener) :
     RecyclerView.Adapter<ProductViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -22,5 +22,13 @@ class ProductAdapter constructor(private val prodDetail: List<ProductModel>, pri
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         holder.bindItem(prodDetail[holder.adapterPosition],listener)
+    }
+
+    fun updateItems(newProducts: List<ProductModel>, clearOldItems: Boolean = true){
+        if (clearOldItems){
+            prodDetail.clear()
+        }
+        prodDetail.addAll(newProducts)
+        notifyDataSetChanged()//notify recyclerview when data changes
     }
 }
