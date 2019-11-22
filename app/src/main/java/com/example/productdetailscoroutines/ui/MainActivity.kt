@@ -32,11 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        DaggerProductComponent.builder()
-            .productWebservicesModule(ProductWebservicesModule())
-            .productRepositoryModule(ProductRepositoryModule())
-            .build()
-            .inject(this)
+        getDaggerDependency()
 
         viewModel =
             ViewModelProviders.of(this, productViewModelFactory).get(ProductViewModel::class.java)
@@ -86,5 +82,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.fetchProdDetails()
+    }
+
+    fun getDaggerDependency(){
+        DaggerProductComponent.builder()
+            .productWebservicesModule(ProductWebservicesModule())
+            .productRepositoryModule(ProductRepositoryModule())
+            .build()
+            .inject(this)
     }
 }
