@@ -2,6 +2,7 @@ package com.example.productdetailscoroutines.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,6 +40,15 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.productListLifeData.observe(this, Observer {products ->
             productAdapter.updateItems(products)
+        })
+
+        viewModel.loadingState.observe(this, Observer {
+
+            when (it) {
+                ProductViewModel.LoadingState.LOADING -> progressbar.visibility = View.VISIBLE
+                ProductViewModel.LoadingState.SUCCESS -> progressbar.visibility = View.GONE
+                else -> progressbar.visibility = View.GONE
+            }
         })
 
         productAdapter = ProductAdapter(

@@ -37,7 +37,8 @@ class ProductWebservicesModule {
         return OkHttpClient.Builder()
             .readTimeout(1000, TimeUnit.SECONDS)
             .writeTimeout(100, TimeUnit.SECONDS)
-            .addInterceptor(loggingInterceptor).build()
+            .addInterceptor(loggingInterceptor)
+            .build()
     }
 
     @Provides
